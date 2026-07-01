@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html data-theme="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description"
+    content="Predicting the motion of other agents in a scene is highly relevant for autonomous driving, as it allows a self-driving car to anticipate. Inspired by the success of decoder-only models for language modeling, we propose DONUT, a Decoder-Only Network for Unrolling Trajectories. Different from existing encoder-decoder forecasting models, we encode historical trajectories and predict future trajectories with a single autoregressive model. This allows the model to make iterative predictions in a consistent manner, and ensures that the model is always provided with up-to-date information, enhancing the performance. Furthermore, inspired by multi-token prediction for language modeling, we introduce an 'overprediction' strategy that gives the network the auxiliary task of predicting trajectories at longer temporal horizons. This allows the model to better anticipate the future, and further improves the performance. With experiments, we demonstrate that our decoder-only approach outperforms the encoder-decoder baseline, and achieves new state-of-the-art results on the Argoverse 2 single-agent motion forecasting benchmark." />
+  <meta name="keywords"
+    content="Motion Forecasting, Waymo, Argoverse 2, Trajectory Prediction, Evaluation, Metrics, Soft mAP, minFDE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    Towards Metric-Agnostic Trajectory Forecasting
+  </title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css" />
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="./static/css/index.css" />
+  <link rel="icon" href="./static/img/favicon.svg" />
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+</head>
+
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              Towards Metric-Agnostic Trajectory Forecasting
+            </h1>
+            <h2 class="subtitle is-4">
+              ECCV 2026
+            </h2>
+            <!-- <div class="title is-4 publication-title">
+                VENUE</span>
+              </div> -->
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=Kx4v8IMAAAAJ&hl=de">Markus Knoche</a><sup>1</sup>
+              </span>
+              <span class="author-block">
+                <a href="https://daandegeus.com">Daan de Geus</a><sup>2</sup>
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=ZcULDB0AAAAJ">Bastian Leibe</a><sup>1</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>RWTH Aachen University</span>
+              <span class="author-block"><sup>2</sup>Eindhoven University of Technology</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- arXiv PDF. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/search/?query=Towards+Metric-Agnostic+Trajectory+Forecasting&searchtype=all&abstracts=show&order=-announced_date_first&size=50"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper (soon)</span>
+                  </a>
+                </span>
+
+                <!-- arXiv abstract. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/search/?query=Towards+Metric-Agnostic+Trajectory+Forecasting&searchtype=all&abstracts=show&order=-announced_date_first&size=50"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv (soon)</span>
+                  </a>
+                </span>
+
+
+                <!-- GitHub. -->
+                <span class="link-block">
+                  <a href="https://github.com/MKnoche/TraDiE-policies"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered is-6">
+        <div class="column has-text-centered">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Accurate trajectory forecasting of surrounding traffic participants is a core capability for autonomous
+              driving, enabling vehicles to anticipate behavior and plan safe maneuvers. We observe that current
+              state-of-the-art forecasting models on Argoverse 2 and the Waymo Open Motion Dataset tailor their training
+              objectives to the different benchmark metrics. Because these metrics encourage conflicting behavior, we
+              propose a paradigm change for trajectory forecasting: <strong>training models with metric-agnostic
+                probabilistic objectives and treating metric optimization as a downstream task applied to the predictive
+                distribution</strong>. Concretely, we introduce Trajectory Distribution Evaluation (TraDiE) policies,
+              metric-specific policies that map a predictive distribution to the set of <i>K</i> trajectories and
+              confidences
+              required by trajectory forecasting metrics. We evaluate this framework by introducing DONUT-NLL, which
+              adapts the training objective of the state-of-the-art trajectory forecasting model DONUT to directly
+              optimize the predictive distribution. Using our policies, DONUT-NLL achieves state-of-the-art results on
+              all metrics of the Waymo motion prediction benchmark.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered is-6">
+        <div class="column has-text-centered">
+          <h2 class="title is-3">Trajectory Forecasting Metrics</h2>
+          <figure style="max-width: 100%; margin: 0 auto">
+            <img src="static/img/metrics.webp" alt="Comparison of minFDE and mAP metrics."
+              style="width: 100%; height: auto" />
+          </figure>
+          <div class="content has-text-justified">
+            <p>
+              <strong>(a)</strong> A trajectory prediction model outputs
+              <strong style="color:#808080;">predictions</strong> with assigned confidences.
+            </p>
+            <p>
+              <strong>(b)</strong> For the distance-based metric <em>minFDE</em>, the endpoint distance between
+              <strong style="color:#57AB27;">ground truth</strong> and
+              <strong style="color:#00549F;">closest prediction</strong> is calculated.
+            </p>
+            <p>
+              <strong>(c)</strong> For the window-based metric (soft) mAP, an oriented window is placed around the
+              ground-truth endpoint. The
+              <strong style="color:#00549F;">highest-confidence trajectory within the window</strong>
+              (<span style="font-weight:bold;">+</span>) counts as a true positive,
+              <strong style="color:#F6A800;">additional trajectories within the window</strong>
+              (<span style="font-weight:bold;">&#9675;</span>) are either counted as false positives (mAP) or ignored
+              (soft mAP).
+              <strong style="color:#CC071E;">Predictions outside the window</strong>
+              (<span style="font-weight:bold;">&#8722;</span>) count as false positives.
+            </p>
+            <p>
+              <strong>(d)</strong> To obtain the (soft) mAP, a
+              <strong style="color:#00549F;">precision-recall curve</strong> is created for each confidence score
+              over the entire dataset and then <strong style="color:#57AB27;">smoothed</strong>;
+              the area under the curve is the final metric.
+            </p>
+            <p>
+              Crucially, these metrics reward conflicting goals: minFDE improves if many endpoints are close to the main
+              mode, whereas endpoints within the same window in (soft) mAP get penalized or ignored.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered is-6">
+        <div class="column has-text-centered">
+          <h2 class="title is-3">TraDiE Policies</h2>
+          <figure style="max-width: 100%; margin: 0 auto">
+            <img src="static/img/policies.webp" alt="Visualization of our TraDiE policies for minFDE and mAP."
+              style="width: 100%; height: auto" />
+          </figure>
+          <div class="content has-text-justified">
+            <p>Both policies start from samples of the endpoint distribution
+              (<span style="font-weight:bold;">&#8226;</span>) of the model's
+              <strong style="color:#808080;">prediction</strong> (left).
+              Both policies output new endpoints
+              (<strong style="color:#CC071E;">&#215;</strong>,
+              <strong style="color:#00549F;">&#215;</strong>,
+              <strong style="color:#57AB27;">&#215;</strong>)
+              which aim to optimize the metric under the predictive distribution.
+            </p>
+            <p>
+              For <em>minFDE</em> (top row), we initialize the new endpoints randomly and directly optimize the minFDE
+              error given the samples from the model's predictive distribution.
+            </p>
+            <p>
+              For <em>(soft) mAP</em> (bottom row), we put an evaluation rectangle around each of the samples, and
+              iteratively select the point which is covered by the most rectangles as the next endpoint.
+              Rectangles already covered are omitted from the next iterations.
+              Confidences are computed as the proportion of rectangles covered by an endpoint.
+            </p>
+            <p>
+              If optimizing the metrics under the model's predictive distribution produces strong benchmark results,
+              this indicates that the model has learned an accurate representation of uncertainty in the real world.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered is-6">
+        <div class="column has-text-centered">
+          <h2 class="title is-3">Experiments and Results</h2>
+          <div class="content has-text-justified">
+            <p>For the main experiments, we use our previous work <a href="https://mknoche.github.io/DONUT/">DONUT</a>,
+              which achieves SOTA results on Argoverse 2.
+              The default winner-takes-all (WTA) loss directly optimizes the minFDE metric instead of aiming for a
+              well-calibrated predictive distribution.
+              For this reason we propose DONUT-NLL which directly optimizes the distribution.
+              We implement two variants: Traj-NLL uses a mixture weight per trajectory, whereas Step-NLL uses a weight
+              per timestep.
+            </p>
+          </div>
+          <figure style="max-width: 100%; margin: 0 auto">
+            <figcaption style="font-size: 0.9em; margin: 10px; text-align: left">
+              <strong>Study of training objectives.</strong> Combining our distance or window policies (indicated by
+              →) with NLL training consistently outperforms the naive WTA predictions. Notably, naive
+              evaluation suggests different design choices than evaluation with policies
+              (<span style="display:inline-block;background-color:#fffab3;padding:0 0.2em;"><span
+                  style="visibility:hidden;">X</span></span> vs.
+              <span style="display:inline-block;background-color:#cde6be;padding:0 0.2em;"><span
+                  style="visibility:hidden;">X</span></span>).
+              Evaluation on Waymo <i>val</i>.
+            </figcaption>
+            <img src="static/img/losses.webp" style="width: 100%; height: auto" />
+          </figure>
+          <figure style="max-width: 100%; margin: 0 auto">
+            <figcaption style="font-size: 0.9em; margin: 10px; text-align: left">
+              <strong>Study of position distributions.</strong> Generalized Gaussians outperform the
+              alternatives under policy optimization.
+              All models use the Step-NLL objective.
+              Evaluation on Waymo <i>val</i>.
+            </figcaption>
+            <img src="static/img/position_distributions.webp" style="width: 100%; height: auto" />
+          </figure>
+          <figure style="max-width: 100%; margin: 0 auto">
+            <figcaption style="font-size: 0.9em; margin: 10px; text-align: left">
+              <strong>Additional baselines.</strong> MTR consistently improves;
+              QCNet degrades for minFDE due to its poor predictive distributions.
+              Evaluation on Waymo <i>val</i>.
+            </figcaption>
+            <img src="static/img/mtr_qcnet.webp" style="width: 100%; height: auto" />
+          </figure>
+          <div class="content has-text-justified">
+            <br>
+            <p>
+              The above results provide a number of key takeaways:
+            </p>
+            <ol>
+              <li>Our TraDiE policies are effective at turning a single distribution into strong performance across
+                heterogeneous metrics.</li>
+              <li>Our policies detect poorly calibrated predictive distributions.</li>
+              <li>Step-NLL combined with generalized Gaussian position distributions outperforms
+                other losses and distributions for DONUT-NLL.</li>
+              <li> Optimizing for distributions instead of metrics favors different design choices.</li>
+              <li> Our analysis of predictive distributions via policies extends to other models.</li>
+            </ol>
+          </div>
+          <figure style="max-width: 100%; margin: 0 auto">
+            <figcaption style="font-size: 0.9em; margin: 10px; text-align: left">
+              <strong>Comparison with the state of the art on Waymo <i>test</i>.</strong>
+              We mark ensembles with <span style="color:#8c8c8c;font-variant:small-caps;">e</span>,
+              and omit methods that train on additional data or use LiDAR.
+              DONUT-NLL achieves state-of-the-art results on all metrics, without requiring retraining.
+            </figcaption>
+            <img src="static/img/sota.webp" style="width: 100%; height: auto" />
+          </figure>
+          <br>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">BibTeX</h2>
+      </div>
+      <div style="position: relative">
+        <pre><code id="bibtex">@inproceedings{knoche2026tradie,
+  title     = {{Towards Metric-Agnostic Trajectory Forecasting}},
+  author    = {Knoche, Markus and de Geus, Daan and Leibe, Bastian},
+  booktitle = {ECCV},
+  year      = {2026}
+}</code></pre>
+        <button onclick="copyToClipboard()" style="
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              background-color: #f3f4f6;
+              border: 1px solid #d1d5db;
+              border-radius: 5px;
+              padding: 5px 10px;
+              cursor: pointer;
+            ">
+          <span style="display: flex; align-items: center; gap: 5px">
+            <i class="far fa-copy has-text-grey" id="bibtex-copy-icon"></i>
+            Copy
+          </span>
+        </button>
+      </div>
+      <script>
+        function copyToClipboard() {
+          const codeBlock = document.getElementById("bibtex").innerText;
+          navigator.clipboard.writeText(codeBlock).then(
+            () => {
+              const icon = document.getElementById("bibtex-copy-icon");
+              icon.classList.remove("far", "fa-copy", "has-text-grey");
+              icon.classList.add("fas", "fa-check", "has-text-success");
+            },
+            (err) => alert("Failed to copy: " + err)
+          );
+        }
+      </script>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              This website is licensed under
+              <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. It is based on
+              the
+              <a href="https://nerfies.github.io/">Nerfies website</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
