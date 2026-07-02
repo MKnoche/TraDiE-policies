@@ -2,7 +2,7 @@
 
 **ECCV 2026**
 
-[arXiv (soon)](https://arxiv.org/search/?query=Towards+Metric-Agnostic+Trajectory+Forecasting&searchtype=all&abstracts=show&order=-announced_date_first&size=50) | [Project Page](https://vision.rwth-aachen.de/TraDiE-policies) | [BibTeX](#Citation)
+[arXiv](https://arxiv.org/abs/2607.01133) | [Project Page](https://vision.rwth-aachen.de/TraDiE-policies) | [BibTeX](#Citation)
 
 [Markus Knoche](https://scholar.google.com/citations?user=Kx4v8IMAAAAJ)<sup>1</sup>, [Daan de Geus](https://daandegeus.com/)<sup>2</sup>, [Bastian Leibe](https://scholar.google.com/citations?hl=de&user=ZcULDB0AAAAJ)<sup>1</sup>
 
