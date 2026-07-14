@@ -1,0 +1,15 @@
+[project]
+name = "TraDiE-policies"
+version = "0.1.0"
+description = "Towards Metric-Agnostic Trajectory Forecasting"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.23.5",
+    "torch==2.1.2",
+    "tqdm>=4.67.3",
+    "waymo-open-dataset-tf-2-12-0==1.6.7",
+]
+
+[[tool.uv.index]]
+url = "https://us-python.pkg.dev/ml-oss-artifacts-published/jax/simple/"
